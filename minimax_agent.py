@@ -77,6 +77,31 @@ def play_game_mini(agent_x):
 
     return games.utility()
 
+def play_game_user(agent_x):
+    games = game.TicTacToe()
+    while not games.is_terminal():
+        if games.current_player == 1:
+            games.display()
+            print("Enter your move:")
+            move = input()
+            valid = False
+            while not valid:
+                if int(move) not in games.get_legal_moves() or int(move) < 0 or int(move) > 8:
+                    print("Invalid move. Please try another value.")
+                    print(games.get_legal_moves())
+                    move = input()
+                else:
+                    valid = True
+
+            games = games.make_move(int(move))
+        else:
+            move = agent_x(games)
+            games = games.make_move(move)
+            
+    games.display()
+
+    return games.utility()
+
 def mini_v_mini(agent_x, agent_o):
     games = game.TicTacToe()
     while not games.is_terminal():
@@ -111,22 +136,37 @@ def main():
     state.display()
     print(f"Count results: {counter}")
 
+    print("MiniMax vs. MiniMax:")
     result = mini_v_mini(minimax, minimax)
     print("Results from Mini vs. Mini:")
     if result == 1:
-        print("Minimax won.")
+        print("X won")
     elif result == -1:
-        print("Congratulations! You won.")
+        print("O won")
     else:
         print("Draw.")
 
-    result1 = play_game_mini(minimax)
-    if result1 == 1:
-        print("Minimax won.")
-    elif result1 == -1:
-        print("Congratulations! You won.")
-    else:
-        print("Draw.")
+    print("Play as X or O?")
+    user_choice = input()
+
+    if user_choice == "X" or user_choice == "x":
+        results_userX = play_game_user(minimax)
+        if results_userX == 1:
+            print("Congratulations! You won.")
+        elif results_userX == -1:
+            print("Minimax won.")
+        else:
+            print("Draw.")
+    elif user_choice == "O" or user_choice == "o":
+        result1 = play_game_mini(minimax)
+        if result1 == 1:
+            print("Minimax won.")
+        elif result1 == -1:
+            print("Congratulations! You won.")
+        else:
+            print("Draw.")
+
+    
 
 
     # TESTING

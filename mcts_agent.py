@@ -168,7 +168,7 @@ def test_blocking_move():
     game_.display()
 
 
-def play_game_mini(agent_x):
+def play_game_mcts(agent_x):
     games = game.TicTacToe()
     while not games.is_terminal():
         if games.current_player == 1:
@@ -193,6 +193,31 @@ def play_game_mini(agent_x):
 
     return games.utility()
 
+def play_game_user(agent_x):
+    games = game.TicTacToe()
+    while not games.is_terminal():
+        if games.current_player == 1:
+            games.display()
+            print("Enter your move:")
+            move = input()
+            valid = False
+            while not valid:
+                if int(move) not in games.get_legal_moves() or int(move) < 0 or int(move) > 8:
+                    print("Invalid move. Please try another value.")
+                    print(games.get_legal_moves())
+                    move = input()
+                else:
+                    valid = True
+
+            games = games.make_move(int(move))
+        else:
+            move = agent_x(games)
+            games = games.make_move(move)
+            
+    games.display()
+
+    return games.utility()
+
 
 def main():
     print("***** Tests under different states *****")
@@ -207,13 +232,21 @@ def main():
     test_blocking_move()
     
     
-    print("Play against MCTS? Y/N")
+    print("Play as X or O?")
     user_choice = input()
-    if user_choice == "Y":
-        result = play_game_mini(mcts)
+    if user_choice == "X" or user_choice == "x":
+        result = play_game_user(mcts)
         if result == 1:
-            print("Minimax won.")
+            print("Congratulations! You won.")
         elif result == -1:
+            print("MCTS won.")
+        else:
+            print("Draw.")
+    elif user_choice == "O" or user_choice =="o":
+        user_result = play_game_mcts(mcts)
+        if user_result == 1:
+            print("MCTS won.")
+        elif user_result == -1:
             print("Congratulations! You won.")
         else:
             print("Draw.")
