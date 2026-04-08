@@ -55,6 +55,58 @@ def display_mcts_times(times, iterations):
     plt.show()
 
 
+# functions for playing against the user:
+def play_game_agent(agent_x):
+    games = TicTacToe()
+    while not games.is_terminal():
+        if games.current_player == 1:
+            move = agent_x(games)
+            games = games.make_move(move)
+        else:
+            games.display()
+            print("Enter your move:")
+            move = input()
+            valid = False
+            while not valid:
+                if int(move) not in games.get_legal_moves() or int(move) < 0 or int(move) > 8:
+                    print("Invalid move. Please try another value.")
+                    print(games.get_legal_moves())
+                    move = input()
+                else:
+                    valid = True
+
+            games = games.make_move(int(move))
+            
+    games.display()
+
+    return games.utility()
+
+def play_game_user(agent_x):
+    games = TicTacToe()
+    while not games.is_terminal():
+        if games.current_player == 1:
+            games.display()
+            print("Enter your move:")
+            move = input()
+            valid = False
+            while not valid:
+                if int(move) not in games.get_legal_moves() or int(move) < 0 or int(move) > 8:
+                    print("Invalid move. Please try another value.")
+                    print(games.get_legal_moves())
+                    move = input()
+                else:
+                    valid = True
+
+            games = games.make_move(int(move))
+        else:
+            move = agent_x(games)
+            games = games.make_move(move)
+            
+    games.display()
+
+    return games.utility()
+
+
 def main():
     num_games = 100
     results = {'Minimax vs Random': {'X wins': 0, 'O wins': 0, 'Draws': 0},

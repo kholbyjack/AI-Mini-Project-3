@@ -36,8 +36,7 @@ def minimax(state):
         return worst_move
 
 def max_value_ab(state, alpha, beta):
-    # TODO: add pruned_count functionality 
-    # possible moves that are cut off when v>=beta
+    # possible moves are cut off when v>=beta
     global node_count, pruned_count
     node_count+=1 # update node counter everytime
 
@@ -55,8 +54,7 @@ def max_value_ab(state, alpha, beta):
     return v
     
 def min_value_ab(state, alpha, beta):
-    # TODO: add pruned_count functionality 
-    # possible moves that are cut off when v<=alpha
+    # possible moves are cut off when v<=alpha
     global node_count, pruned_count
     node_count+=1 # update node counter everytime
 
@@ -112,10 +110,10 @@ def main():
     print(best)
     state = state.make_move(best)
     state.display()
-    print(node_count)
-    print(pruned_count)
+    print(f"Node count: {node_count}")
+    print(f"Pruned count: {pruned_count}")
     percent_pruned = (pruned_count / (node_count + pruned_count)) * 100
-    print(f"{percent_pruned:.2f}%")
+    print(f"Percentage pruned: {percent_pruned:.2f}%")
 
 
 

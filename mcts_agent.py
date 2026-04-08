@@ -168,57 +168,6 @@ def test_blocking_move():
     game_.display()
 
 
-def play_game_mcts(agent_x):
-    games = game.TicTacToe()
-    while not games.is_terminal():
-        if games.current_player == 1:
-            move = agent_x(games)
-            games = games.make_move(move)
-        else:
-            games.display()
-            print("Enter your move:")
-            move = input()
-            valid = False
-            while not valid:
-                if int(move) not in games.get_legal_moves() or int(move) < 0 or int(move) > 8:
-                    print("Invalid move. Please try another value.")
-                    print(games.get_legal_moves())
-                    move = input()
-                else:
-                    valid = True
-
-            games = games.make_move(int(move))
-            
-    games.display()
-
-    return games.utility()
-
-def play_game_user(agent_x):
-    games = game.TicTacToe()
-    while not games.is_terminal():
-        if games.current_player == 1:
-            games.display()
-            print("Enter your move:")
-            move = input()
-            valid = False
-            while not valid:
-                if int(move) not in games.get_legal_moves() or int(move) < 0 or int(move) > 8:
-                    print("Invalid move. Please try another value.")
-                    print(games.get_legal_moves())
-                    move = input()
-                else:
-                    valid = True
-
-            games = games.make_move(int(move))
-        else:
-            move = agent_x(games)
-            games = games.make_move(move)
-            
-    games.display()
-
-    return games.utility()
-
-
 def main():
     print("***** Tests under different states *****")
     game_ = game.TicTacToe()
@@ -230,29 +179,8 @@ def main():
 
     test_winning_move()
     test_blocking_move()
-    
-    
-    print("Play as X or O?")
-    user_choice = input()
-    if user_choice == "X" or user_choice == "x":
-        result = play_game_user(mcts)
-        if result == 1:
-            print("Congratulations! You won.")
-        elif result == -1:
-            print("MCTS won.")
-        else:
-            print("Draw.")
-    elif user_choice == "O" or user_choice =="o":
-        user_result = play_game_mcts(mcts)
-        if user_result == 1:
-            print("MCTS won.")
-        elif user_result == -1:
-            print("Congratulations! You won.")
-        else:
-            print("Draw.")
 
     
 
 if __name__ == "__main__":
     main()
-    
