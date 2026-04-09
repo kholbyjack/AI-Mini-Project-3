@@ -4,68 +4,55 @@ from minimax_agent import  minimax
 from mcts_agent import mcts
 import minimax_agent_ab
 
+def play_game(agent, agent_name, user_piece_choice):
+     if user_piece_choice == "X" or user_piece_choice == "x":
+        results_userX = play_game_user(agent)
+        if results_userX == 1:
+            print("Congratulations! You won.")
+        elif results_userX == -1:
+            print(f"{agent_name} won.")
+        else:
+            print("Draw.")
+     elif user_piece_choice == "O" or user_piece_choice == "o":
+        result1 = play_game_agent(agent)
+        if result1 == 1:
+            print(f"{agent_name} won.")
+        elif result1 == -1:
+            print("Congratulations! You won.")
+        else:
+            print("Draw.")
 
 def main():
     # 
-    print("Choose your opponent (minimax, minimax with AB pruning, or MCTS)")
-    user_opponent_choice = input()
+    possible_mini = ["1", "MM", "mm", "minimax", "mini max", "MiniMax", "Mini Max"]
+    possible_miniAB = ["2", "MMAB", "mmab", "mini max with AB pruning", "MiniMaxAB", "minimaxab", "pruning", "Pruning"]
+    possible_mcts = ["3", "MCTS", "mcts", "monte carlo", "Monte Carlo", "Monte Carlo Search Tree"]
+    possible_no = ["No", "no", "N", "n", "No ", "no ", "Nah", "nah"]
+    play = True
 
-    print("Choose your piece (X or O)")
-    user_piece_choice = input()
+    while play:
+        # getting user's opponent and position
+        print("Choose your opponent from the following:")
+        print("1 for minimax \n2 for minimax with AB pruning \n3 for MCTS")
+        user_opponent_choice = input()
 
-    if user_opponent_choice == "minimax" or user_opponent_choice == "MM":
-        if user_piece_choice == "X" or user_piece_choice == "x":
-            results_userX = play_game_user(minimax)
-            if results_userX == 1:
-                print("Congratulations! You won.")
-            elif results_userX == -1:
-                print("Minimax won.")
-            else:
-                print("Draw.")
-        elif user_piece_choice == "O" or user_piece_choice == "o":
-            result1 = play_game_agent(minimax)
-            if result1 == 1:
-                print("Minimax won.")
-            elif result1 == -1:
-                print("Congratulations! You won.")
-            else:
-                print("Draw.")
+        print("Choose your piece (X or O)")
+        user_piece_choice = input()
 
-    elif user_opponent_choice == "minimaxab" or user_opponent_choice == "MMAB":
-        if user_piece_choice == "X" or user_piece_choice == "x":
-            results_userX = play_game_user(minimax_agent_ab.minimax)
-            if results_userX == 1:
-                print("Congratulations! You won.")
-            elif results_userX == -1:
-                print("Minimax won.")
-            else:
-                print("Draw.")
-        elif user_piece_choice == "O" or user_piece_choice == "o":
-            result1 = play_game_agent(minimax_agent_ab.minimax)
-            if result1 == 1:
-                print("Minimax won.")
-            elif result1 == -1:
-                print("Congratulations! You won.")
-            else:
-                print("Draw.")
+        if user_opponent_choice in possible_mini:
+            play_game(minimax, "MiniMax", user_piece_choice)
 
-    elif user_opponent_choice == "MCTS":
-        if user_piece_choice == "X" or user_piece_choice == "x":
-            result = play_game_user(mcts)
-            if result == 1:
-                print("Congratulations! You won.")
-            elif result == -1:
-                print("MCTS won.")
-            else:
-                print("Draw.")
-        elif user_piece_choice == "O" or user_piece_choice =="o":
-            user_result = play_game_agent(mcts)
-            if user_result == 1:
-                print("MCTS won.")
-            elif user_result == -1:
-                print("Congratulations! You won.")
-            else:
-                print("Draw.")
+        elif user_opponent_choice in possible_miniAB:
+            play_game(minimax_agent_ab.minimax, "MiniMaxAB", user_piece_choice)
+
+        elif user_opponent_choice in possible_mcts:
+            play_game(mcts, "MCTS", user_piece_choice)
+
+        print("Play again?")
+        play_choice = input()
+
+        if play_choice in possible_no:
+            play = False
 
 
 if __name__ == "__main__":
